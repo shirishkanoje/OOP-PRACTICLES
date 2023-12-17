@@ -1,0 +1,84 @@
+import java.util.Scanner;
+
+class Employee {
+    String empName;
+    int empId;
+    String address;
+    String mailId;
+    String mobileNo;
+
+    double basicPay;
+
+    public Employee(String empName, int empId, String address, String mailId, String mobileNo, double basicPay) {
+        this.empName = empName;
+        this.empId = empId;
+        this.address = address;
+        this.mailId = mailId;
+        this.mobileNo = mobileNo;
+        this.basicPay = basicPay;
+    }
+
+    public double getDA() {
+        return 0.97 * basicPay;
+    }
+
+    public double getHRA() {
+        return 0.1 * basicPay;
+    }
+
+    public double getPF() {
+        return 0.12 * basicPay;
+    }
+
+    public double getStaffFund() {
+        return 0.15 * basicPay;
+    }
+
+    public double getNetSalary() {
+        return basicPay + getDA() + getHRA() - getPF() - getStaffFund();
+    }
+}
+
+class Programmer extends Employee {
+    public Programmer(String empName, int empId, String address, String mailId, String mobileNo, double basicPay) {
+        super(empName, empId, address, mailId, mobileNo, basicPay);
+    }
+}
+
+class TeamLead extends Employee {
+    public TeamLead(String empName, int empId, String address, String mailId, String mobileNo, double basicPay) {
+        super(empName, empId, address, mailId, mobileNo, basicPay);
+    }
+}
+
+class AssistantProjectManager extends Employee {
+    public AssistantProjectManager(String empName, int empId, String address, String mailId, String mobileNo, double basicPay) {
+        super(empName, empId, address, mailId, mobileNo, basicPay);
+    }
+}
+
+class ProjectManager extends Employee {
+    public ProjectManager(String empName, int empId, String address, String mailId, String mobileNo, double basicPay) {
+        super(empName, empId, address, mailId, mobileNo, basicPay);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Example usage for an employee of type Programmer
+        Programmer programmer = new Programmer("John Doe", 123, "123 Main St", "john@example.com", "1234567890", 50000);
+        System.out.println("Pay Slip for Programmer:");
+        System.out.println("Employee Name: " + programmer.empName);
+        System.out.println("Employee ID: " + programmer.empId);
+        System.out.println("Basic Pay: " + programmer.basicPay);
+        System.out.println("DA: " + programmer.getDA());
+        System.out.println("HRA: " + programmer.getHRA());
+        System.out.println("PF: " + programmer.getPF());
+        System.out.println("Staff Fund: " + programmer.getStaffFund());
+        System.out.println("Net Salary: " + programmer.getNetSalary());
+
+        // Other employee types (TeamLead, AssistantProjectManager, ProjectManager) can be similarly tested
+    }
+}

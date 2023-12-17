@@ -1,0 +1,145 @@
+import java.io.*;
+import java.util.*;
+
+class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+    String studentId;
+    String name;
+    int rollNo;
+    String className;
+    int marks;
+    String address;
+
+    public Student(String studentId, String name, int rollNo, String className, int marks, String address) {
+        this.studentId = studentId;
+        this.name = name;
+        this.rollNo = rollNo;
+        this.className = className;
+        this.marks = marks;
+        this.address = address;
+    }
+
+    public String toString() {
+        return "Student ID: " + studentId +
+                ", Name: " + name +
+                ", Roll No: " + rollNo +
+                ", Class: " + className +
+                ", Marks: " + marks +
+                ", Address: " + address;
+    }
+}
+
+public class StudentDatabase {
+    static File file = new File("student_database.txt");
+
+    public static void createDatabase(List<Student> students) {
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(students);
+            oos.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void displayDatabase() {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            List<Student> students = (List<Student>) ois.readObject();
+            for (Student student : students) {
+                System.out.println(student);
+            }
+            ois.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteRecord(String studentId) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            List<Student> students = (List<Student>) ois.readObject();
+            ois.close();
+            fis.close();
+
+            List<Student> updatedList = new ArrayList<>();
+            for (Student student : students) {
+                if (!student.studentId.equals(studentId)) {
+                    updatedList.add(student);
+                }
+            }
+
+            createDatabase(updatedList);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateRecord(String studentId, Student updatedStudent) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            List<Student> students = (List<Student>) ois.readObject();
+            ois.close();
+            fis.close();
+
+            List<Student> updatedList = new ArrayList<>();
+            for (Student student : students) {
+                if (student.studentId.equals(studentId)) {
+                    updatedList.add(updatedStudent);
+                } else {
+                    updatedList.add(student);
+                }
+            }
+
+            createDatabase(updatedList);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void searchRecord(String studentId) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            List<Student> students = (List<Student>) ois.readObject();
+            ois.close();
+            fis.close();
+
+            for (Student student : students) {
+                if (student.studentId.equals(studentId)) {
+                    System.out.println(student);
+                    return;
+                }
+            }
+            System.out.println("Record not found for Student ID: " + studentId);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("S101", "John Doe", 101, "A", 90, "123, Main Street, City"));
+        students.add(new Student("S102", "Jane Smith", 102, "B", 85, "456, Park Avenue, Town"));
+
+        createDatabase(students);
+        displayDatabase();
+        System.out.println("Deleting record with student ID S101");
+        deleteRecord("S101");
+        displayDatabase();
+        System.out.println("Updating record with student ID S102");
+        updateRecord("S102", new Student("S102", "Jane Smith", 102, "C", 88, "456, Park Avenue, Town"));
+        displayDatabase();
+        System.out.println("Searching record with student ID S102");
+        searchRecord("S102");
+        System.out.println("Searching record with student ID S103");
+        searchRecord("S103");
+    }
+}
+

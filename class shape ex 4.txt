@@ -1,0 +1,49 @@
+import java.util.Scanner;
+
+abstract class Shape {
+    double dimension1;
+    double dimension2;
+
+    public void inputData() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter dimensions:");
+        this.dimension1 = sc.nextDouble();
+        this.dimension2 = sc.nextDouble();
+    }
+
+    abstract double computeArea();
+}
+
+class Triangle extends Shape {
+    @Override
+    double computeArea() {
+        return 0.5 * this.dimension1 * this.dimension2;
+    }
+}
+
+class Rectangle extends Shape {
+    @Override
+    double computeArea() {
+        return this.dimension1 * this.dimension2;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape shape;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter 1 for Triangle and 2 for Rectangle:");
+        int choice = sc.nextInt();
+        if (choice == 1) {
+            shape = new Triangle();
+        } else if (choice == 2) {
+            shape = new Rectangle();
+        } else {
+            System.out.println("Invalid Choice");
+            return;
+        }
+
+        shape.inputData();
+        System.out.println("Area of the shape is: " + shape.computeArea());
+    }
+}

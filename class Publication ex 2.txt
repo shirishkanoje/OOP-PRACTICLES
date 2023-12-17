@@ -1,0 +1,71 @@
+class Publication {
+    String title;
+    double price;
+    int copies;
+
+    public Publication(String title, double price, int copies) {
+        this.title = title;
+        this.price = price;
+        this.copies = copies;
+    }
+
+    public void saleCopies(int sold) {
+        if (sold <= this.copies) {
+            this.copies -= sold;
+            System.out.println(sold + " copies of " + this.title + " sold.");
+        } else {
+            System.out.println("Not enough copies of " + this.title + " available for sale.");
+        }
+    }
+}
+
+class Book extends Publication {
+    String author;
+
+    public Book(String title, double price, int copies, String author) {
+        super(title, price, copies);
+        this.author = author;
+    }
+
+    public void orderCopies(int ordered) {
+        System.out.println(ordered + " copies of " + this.title + " by " + this.author + " ordered.");
+        this.copies += ordered;
+    }
+}
+
+class Magazine extends Publication {
+    int currentIssue;
+
+    public Magazine(String title, double price, int copies, int currentIssue) {
+        super(title, price, copies);
+        this.currentIssue = currentIssue;
+    }
+
+    public void orderQty(int ordered) {
+        System.out.println(ordered + " copies of " + this.title + " ordered for the next issue.");
+        this.copies += ordered;
+    }
+
+    public void receiveIssue() {
+        this.currentIssue++;
+        System.out.println("Received the latest issue of " + this.title + ". Current issue: " + this.currentIssue);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Book book = new Book("The Great Gatsby", 15.99, 100, "F. Scott Fitzgerald");
+        Magazine magazine = new Magazine("Time", 5.99, 200, 45);
+
+        // Ordering and selling copies
+        book.orderCopies(50);
+        magazine.orderQty(100);
+        book.saleCopies(20);
+        magazine.saleCopies(150);
+
+        // Displaying total sale of the publications
+        System.out.println("Total sale of " + book.title + ": $" + (150 - book.copies) * book.price);
+        System.out.println("Total sale of " + magazine.title + ": $" + (300 - magazine.copies) * magazine.price);
+    }
+}
+
